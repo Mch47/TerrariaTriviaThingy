@@ -1,0 +1,122 @@
+var x = 0,
+    y = 0,
+    tmp = 0,
+    order = [],
+    amount = 20,
+    score = 0,
+    multi = 1,
+    time = 10,
+    corr = 0,
+    LB = [],
+    questions = [
+        "Mining Amour is weaker than Rich Mahogany armour",
+        !0,
+        "https://terraria.wiki.gg/images/0/0d/Rich_Mahogany_armor.png",
+        "The clothier voodoo doll summons the Wall of Flesh",
+        !1,
+        "https://terraria.wiki.gg/images/c/c0/Wall_of_Flesh.gif",
+        "The Frost Leigion is summoned via the Snow Globe",
+        !0,
+        "https://terraria.wiki.gg/images/thumb/c/cd/Frost_Legion_Battle.png/450px-Frost_Legion_Battle.png",
+        "Lucky Horseshoes can not be crafted, they can be found in golden chests",
+        !1,
+        "https://terraria.wiki.gg/images/d/d7/Lucky_Horseshoe.png",
+        "You have to have 50 silver for the Merchant to move in",
+        !0,
+        "https://terraria.wiki.gg/images/1/19/Merchant.png",
+        "Life crystals increace your health by 10 HP",
+        !1,
+        "https://terraria.wiki.gg/images/8/82/Life_Crystal_%28placed%29.gif",
+        "You can mine anything weaker than Meteorite with a copper pickaxe",
+        !0,
+        "https://terraria.wiki.gg/images/d/d7/Copper_Pickaxe.png",
+        "The Blood Mood event is triggered when you have at least 140 health",
+        !1,
+        "https://terraria.wiki.gg/images/5/59/Blood_Zombie.png",
+        "Pinky has a 1% chance to drop the Slime Staff in normal mode",
+        !0,
+        "https://terraria.wiki.gg/images/1/17/Pinky.png",
+        "The Corruption biome can only be accessed when hardmode is started",
+        !1,
+        "https://static.wikia.nocookie.net/terraria_gamepedia/images/4/4c/BiomeBannerCorruption.png/revision/latest/scale-to-width-down/464?cb=20200707174503&format=original",
+        '"Impending doom approaches" signifies that the Moon Lord is about to spawn',
+        !0,
+        "https://terraria.wiki.gg/images/8/84/Moon_Lord%27s_Head.gif",
+        "You have to be in the Crimson biome to fight the eater of worlds",
+        !1,
+        "https://terraria.wiki.gg/images/2/2d/Eater_of_Worlds.png",
+        "The boss with the most HP is Skeletron",
+        !0,
+        "https://terraria.wiki.gg/images/a/a3/Skeletron_Head.png",
+        "The iron skin potion makes you immune to lava",
+        !1,
+        "https://terraria.wiki.gg/images/thumb/0/0d/Lava_ingame.png/345px-Lava_ingame.png",
+        "The Molten pickaxe is the strongest pickaxe in the game",
+        !0,
+        "https://terraria.wiki.gg/images/d/d0/Molten_Pickaxe.png",
+        "The Trident is the strongest spear in the game",
+        !1,
+        "https://terraria.wiki.gg/images/9/9a/Trident.png",
+        "The Goblin Scout drops Tattered Cloth",
+        !0,
+        "https://terraria.wiki.gg/images/2/27/Goblin_Scout.png",
+        "There are 5 flail-type weapons",
+        !1,
+        "https://terraria.wiki.gg/images/6/63/Mace.png",
+        "Meteorite armor gives 16 defense",
+        !0,
+        "https://terraria.wiki.gg/images/1/1a/Meteor_armor_female.png",
+        "A crate potion increaces the chance that crates fall out of the sky",
+        !1,
+        "https://terraria.wiki.gg/images/0/00/Wooden_Crate.png",
+        "The Destroyer has 80000 health in normal mode",
+        !0,
+        "https://terraria.wiki.gg/images/4/4f/The_Destroyer.png",
+        "Mythril is equally as strong as Palladium",
+        !1,
+        "https://terraria.wiki.gg/images/b/b2/Mythril_Bar.png",
+    ];
+function Includes(e, t) {
+    for (var i = 0; i < e.length; ) {
+        if (e[i] == t) return !0;
+        i += 1;
+    }
+    return !1;
+}
+for (; x < amount; ) {
+    for (tmp = randomNumber(0, amount - 1); Includes(order, tmp); ) tmp = randomNumber(0, questions.length / 3 - 1);
+    order.push(tmp), (x += 1);
+}
+function AnsTimeout() {
+    y == x ? getTime() - time > 1e4 && ((multi = 1), AskQuestion((x += 1))) : AskQuestion(x),
+        setText("t", "TIME : " + (10 - Math.round((getTime() - time) / 1e3))),
+        x < amount ? setTimeout(AnsTimeout, 100) : (setScreen("screen2"), setText("label1", "CONGRATS, YOU GOT " + corr + "/20 QUESTIONS CORRECT!"));
+}
+function AskQuestion(e) {
+    (y = x), (time = getTime()), 3 * order[e] < questions.length && (setProperty("image1", "image", questions[3 * order[x] + 2]), setText("q", questions[3 * order[x]]));
+}
+function AnsTrue() {
+    1 == questions[3 * order[x] + 1] ? ((score += Math.round((1e5 * multi) / (getTime() - time))), (multi += 0.1), setText("s", "SCORE : " + score), (corr += 1)) : (multi = 1), (x += 1);
+}
+function AnsFalse() {
+    0 == questions[3 * order[x] + 1] ? ((score += Math.round((1e5 * multi) / (getTime() - time))), (multi += 0.1), setText("s", "SCORE : " + score), (corr += 1)) : (multi = 1), (x += 1);
+}
+function leaderboard() {
+    console.log("Cheese"), setScreen("screen3");
+    for (var e = "", t = 0; t < LB.length; ) (e += LB[t]), (e += " : "), (e += LB[t + 1]), (e += " \n"), (t += 2);
+    setText("label2", e);
+}
+function startE() {
+    hideElement("startbtn"), hideElement("image2"), showElement("button1"), showElement("button2"), showElement("s"), showElement("t"), AskQuestion(x), AnsTimeout();
+}
+onEvent("button1", "click", AnsFalse),
+    onEvent("button2", "click", AnsTrue),
+    onEvent("startbtn", "click", startE),
+    onEvent("button3", "click", leaderboard),
+    (y = 0),
+    (x = 0),
+    setScreen("screen1"),
+    hideElement("button3"),
+    showElement("image2"),
+    showElement("startbtn"),
+    playSound("https://terraria.wiki.gg/images/d/db/Music-Overworld_Day.mp3", !0);
